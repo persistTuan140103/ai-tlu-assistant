@@ -7,14 +7,14 @@ import AddModelButtonSubtext from "../components/AddModelButtonSubtext";
 import Alert from "../components/gui/Alert";
 import ModelSelectionListbox from "../components/modelSelection/ModelSelectionListbox";
 import { IdeMessengerContext } from "../context/IdeMessenger";
+import { completionParamsInputs } from "../pages/AddNewModel/configs/completionParamsInputs";
+import { DisplayInfo } from "../pages/AddNewModel/configs/models";
 import {
   ProviderInfo,
   providers,
 } from "../pages/AddNewModel/configs/providers";
-import { FREE_TRIAL_LIMIT_REQUESTS, hasPassedFTL } from "../util/freeTrial";
-import { completionParamsInputs } from "../pages/AddNewModel/configs/completionParamsInputs";
 import { setDefaultModel } from "../redux/slices/configSlice";
-import { DisplayInfo } from "../pages/AddNewModel/configs/models";
+import { FREE_TRIAL_LIMIT_REQUESTS, hasPassedFTL } from "../util/freeTrial";
 
 interface QuickModelSetupProps {
   onDone: () => void;
@@ -30,10 +30,14 @@ function AddModelForm({
   onDone,
   hideFreeTrialLimitMessage,
 }: QuickModelSetupProps) {
-  const [selectedProvider, setSelectedProvider] = useState<ProviderInfo>(
-    providers["openai"]!,
-  );
 
+  const mistralProvider = providers["mistral"]!;
+  // const [selectedProvider, setSelectedProvider] = useState<ProviderInfo>(
+  //   providers["openai"]!,
+  // );
+  const [selectedProvider, setSelectedProvider] = useState<ProviderInfo>(
+   mistralProvider,
+  );
   const [selectedModel, setSelectedModel] = useState(
     selectedProvider.packages[0],
   );
@@ -49,21 +53,25 @@ function AddModelForm({
     providers["gemini"]?.title || "",
     providers["azure"]?.title || "",
     providers["ollama"]?.title || "",
+    providers["groq"]?.title || "",
   ];
 
-  const allProviders = Object.entries(providers)
-    .filter(([key]) => !["freetrial", "openai-aiohttp"].includes(key))
-    .map(([, provider]) => provider)
-    .filter((provider) => !!provider)
-    .map((provider) => provider!); // for type checking
+  const allProviders = [mistralProvider];
+  // const allProviders = Object.entries(providers)
+  //   .filter(([key]) => !["freetrial", "openai-aiohttp"].includes(key))
+  //   .map(([, provider]) => provider)
+  //   .filter((provider) => !!provider)
+  //   .map((provider) => provider!); // for type checking
 
-  const popularProviders = allProviders
-    .filter((provider) => popularProviderTitles.includes(provider.title))
-    .sort((a, b) => a.title.localeCompare(b.title));
+  const popularProviders: ProviderInfo[] = allProviders
+  // const popularProviders = allProviders
+  //   .filter((provider) => popularProviderTitles.includes(provider.title))
+  //   .sort((a, b) => a.title.localeCompare(b.title));
 
-  const otherProviders = allProviders
-    .filter((provider) => !popularProviderTitles.includes(provider.title))
-    .sort((a, b) => a.title.localeCompare(b.title));
+  const otherProviders: ProviderInfo[] = [];
+  // const otherProviders = allProviders
+  //   .filter((provider) => !popularProviderTitles.includes(provider.title))
+  //   .sort((a, b) => a.title.localeCompare(b.title));
 
   const selectedProviderApiKeyUrl = selectedModel.params.model.startsWith(
     "codestral",
@@ -72,6 +80,9 @@ function AddModelForm({
     : selectedProvider.apiKeyUrl;
 
   function isDisabled() {
+    if(selectedModel.title.includes("Codestral")) {
+      return false;
+    }
     if (
       selectedProvider.downloadUrl ||
       selectedProvider.provider === "free-trial"
@@ -193,6 +204,7 @@ function AddModelForm({
             <div>
               <label className="block text-sm font-medium">Model</label>
               <ModelSelectionListbox
+                isProvider={false}
                 selectedProvider={selectedModel}
                 setSelectedProvider={(val: DisplayInfo) => {
                   const options =
@@ -217,7 +229,7 @@ function AddModelForm({
             </div>
 
             {selectedModel.params.model.startsWith("codestral") && (
-              <div className="my-2">
+              <div style={{display: 'none'}} className="my-2">
                 <Alert>
                   <p className="m-0 text-sm font-bold">Codestral API key</p>
                   <p className="m-0 mt-1">
@@ -228,7 +240,7 @@ function AddModelForm({
               </div>
             )}
 
-            {selectedProvider.apiKeyUrl && (
+            {selectedProvider.apiKeyUrl && !selectedModel.title.includes("Codestral") &&(
               <div>
                 <>
                   <label className="mb-1 block text-sm font-medium">

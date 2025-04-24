@@ -96,7 +96,12 @@ const isMacTarget = target?.startsWith("darwin");
   );
 
   const indexHtmlPath = path.join(intellijExtensionWebviewPath, "index.html");
-  fs.copyFileSync(indexHtmlPath, "tmp_index.html");
+  if(fs.existsSync(indexHtmlPath)){
+    fs.copyFileSync(indexHtmlPath, "tmp_index.html");
+  }
+  else{
+    console.log(`File ${indexHtmlPath} không tồn tại, bỏ qua bước sao chép.`);
+  }
   rimrafSync(intellijExtensionWebviewPath);
   fs.mkdirSync(intellijExtensionWebviewPath, { recursive: true });
 

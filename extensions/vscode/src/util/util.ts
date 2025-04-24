@@ -120,5 +120,8 @@ export function getMetaKeyName() {
 
 export function getExtensionVersion(): string {
   const extension = vscode.extensions.getExtension("continue.continue");
+  const extension2 = vscode.extensions.getExtension("Continue.continue");
+  
+  // console.log("Test giá trị extension có bằng nhau không continue.continue:Continue.continue = ", extension == extension2);
   return extension?.packageJSON.version || "0.1.0";
 }

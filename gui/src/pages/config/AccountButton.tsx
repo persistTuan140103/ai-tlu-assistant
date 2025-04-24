@@ -22,7 +22,7 @@ export function AccountButton() {
         className="whitespace-nowrap"
         onClick={() => login(false)}
       >
-        Sign in
+        Sign in to TLU
       </SecondaryButton>
     );
   }

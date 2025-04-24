@@ -785,7 +785,7 @@ const getCommandsMap: (
       // Create the full screen panel
       let panel = vscode.window.createWebviewPanel(
         "continue.continueGUIView",
-        "Continue",
+        "AI TLU",
         vscode.ViewColumn.One,
         {
           retainContextWhenHidden: true,

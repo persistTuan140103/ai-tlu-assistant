@@ -1,10 +1,10 @@
 <div align="center">
 
-![Continue logo](media/readme.png)
+![Continue logo](media/icon.png)
 
 </div>
 
-<h1 align="center">Continue</h1>
+<h1 align="center">TLU-AI</h1>
 
 <div align="center">
 

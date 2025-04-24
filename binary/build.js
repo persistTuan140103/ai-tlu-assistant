@@ -8,6 +8,21 @@ const {
   execCmdSync,
   autodetectPlatformAndArch,
 } = require("../scripts/util");
+const tlaFixPlugin = {
+  name: "tla-fix",
+  setup(build) {
+    build.onLoad({ filter: /pkce-challenge/ }, async (args) => {
+      const contents = fs.readFileSync(args.path, "utf8");
+      // Thay top-level await bằng require
+      const modified = contents.replace(
+        /await import\("node:crypto"\)/g,
+        'require("crypto")'
+      );
+      return { contents: modified, loader: "js" };
+    });
+  },
+};
+
 
 // Clean slate
 const bin = path.join(__dirname, "bin");
@@ -207,6 +222,9 @@ async function installNodeModuleInTempDirAndCopyToCurrent(packageName, toCopy) {
       "./index.node",
     ],
     format: "cjs",
+    plugins:[
+      tlaFixPlugin
+    ],
     platform: "node",
     sourcemap: true,
     minify: true,

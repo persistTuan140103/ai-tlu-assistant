@@ -98,7 +98,7 @@ function ModelOption({
           <div className="flex flex-1 flex-row items-center gap-2">
             <CubeIcon className="h-3 w-3 flex-shrink-0" />
             <span className="line-clamp-1 flex-1">
-              {option.title}
+              {option.title.replaceAll("Codestral", "AI Tlu")}
               {showMissingApiKeyMsg && (
                 <span className="ml-2 text-[10px] italic">
                   (Missing API key)
@@ -209,7 +209,7 @@ function ModelSelect() {
           className="h-[18px] gap-1 border-none text-gray-400"
         >
           <span className="line-clamp-1 hover:brightness-110">
-            {modelSelectTitle(defaultModel) || "Select model"}
+            {(modelSelectTitle(defaultModel) || "Select model").replaceAll("Codestral", "AI Tlu")}
           </span>
           <ChevronDownIcon
             className="h-2 w-2 flex-shrink-0 hover:brightness-110"

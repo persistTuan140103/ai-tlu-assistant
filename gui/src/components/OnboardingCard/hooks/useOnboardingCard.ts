@@ -1,15 +1,13 @@
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { TabTitle } from "../components/OnboardingCardTabs";
+import { OnboardingCardState } from "..";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import {
   setDialogMessage,
   setOnboardingCard,
   setShowDialog,
 } from "../../../redux/slices/uiSlice";
-import { OnboardingCardState } from "..";
 import { getLocalStorage, setLocalStorage } from "../../../util/localStorage";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { saveCurrentSession } from "../../../redux/thunks/session";
+import { TabTitle } from "../components/OnboardingCardTabs";
 
 export interface UseOnboardingCard {
   show: OnboardingCardState["show"];

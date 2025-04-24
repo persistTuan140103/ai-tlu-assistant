@@ -44,6 +44,7 @@ const GridDiv = styled.div`
 const Layout = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  console.log("Current path: " + location.pathname);
   const dispatch = useAppDispatch();
   const onboardingCard = useOnboardingCard();
   const { pathname } = useLocation();

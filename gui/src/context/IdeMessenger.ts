@@ -160,6 +160,10 @@ export class IdeMessenger implements IIdeMessenger {
       window.addEventListener("message", handler);
 
       this.post(messageType, data, messageId);
+
+      if(messageType == "getControlPlaneSessionInfo"){
+        console.log("sending messsage from IdeMessenger: getControlPlaneSessionInfo", data);
+      }
     });
   }
 

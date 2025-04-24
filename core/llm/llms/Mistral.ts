@@ -29,6 +29,10 @@ class Mistral extends OpenAI {
 
   constructor(options: LLMOptions) {
     super(options);
+    if(!this.apiKey){
+      this.apiKey = "8PZwFFlRdCNGcp6PMgRS2FeZjWiVda6N";
+    }
+    // console.log("API key Mistral: " + this.apiKey);
     if (
       options.model.includes("codestral") &&
       !options.model.includes("mamba")

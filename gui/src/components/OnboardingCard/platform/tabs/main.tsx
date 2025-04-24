@@ -24,6 +24,8 @@ export default function MainTab({
         onboardingCard.close(isDialog);
       }
     });
+
+    console.log("This is local AI");
   }
 
   function openPastFreeTrialOnboarding() {
@@ -42,7 +44,14 @@ export default function MainTab({
         <ContinueLogo height={75} />
       </div>
 
-      {pastFreeTrialLimit ? (
+      <Button
+            onClick={onRemainLocal}
+            className="mt-4 grid w-full grid-flow-col items-center gap-2"
+          >
+            Get started
+      </Button>
+
+      {/* {pastFreeTrialLimit ? (
         <>
           <p className="xs:w-3/4 w-full text-sm">
             You've reached the free trial limit. Visit the Continue Platform to
@@ -82,7 +91,7 @@ export default function MainTab({
             Get started
           </Button>
         </>
-      )}
+      )} */}
 
       {onboardingCard.activeTab === "ExistingUserHubIntro" ? (
         <ButtonSubtext onClick={() => onboardingCard.close(isDialog)}>

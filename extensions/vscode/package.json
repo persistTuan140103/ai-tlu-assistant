@@ -1,8 +1,8 @@
 {
-  "name": "continue",
+  "name": "ai-tlu-assistant",
   "icon": "media/icon.png",
   "author": "Continue Dev, Inc",
-  "version": "1.1.16",
+  "version": "1.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/continuedev/continue"
@@ -18,10 +18,10 @@
   "homepage": "https://continue.dev",
   "qna": "https://github.com/continuedev/continue/issues/new/choose",
   "license": "Apache-2.0",
-  "displayName": "Continue - Codestral, Claude, and more",
+  "displayName": "TLU AI Assistant",
   "pricing": "Free",
-  "description": "The leading open-source AI code assistant",
-  "publisher": "Continue",
+  "description": "An AI assistant for TLU developers.",
+  "publisher": "AI-TLU",
   "engines": {
     "vscode": "^1.70.0",
     "node": ">=20.11.0"
@@ -413,7 +413,7 @@
     "submenus": [
       {
         "id": "continue.continueSubMenu",
-        "label": "Continue"
+        "label": "Continue - tmp"
       }
     ],
     "menus": {
@@ -530,8 +530,8 @@
       "activitybar": [
         {
           "id": "continue",
-          "title": "Continue",
-          "icon": "media/sidebar-icon.png"
+          "title": "TLU AI Assistant",
+          "icon": "media/icon.png"
         }
       ]
     },
@@ -540,8 +540,8 @@
         {
           "type": "webview",
           "id": "continue.continueGUIView",
-          "name": "Continue",
-          "icon": "media/sidebar-icon.png",
+          "name": "TLU AI Assistant",
+          "icon": "media/icon.png",
           "visibility": "visible"
         }
       ]
@@ -682,3 +682,4 @@
     "yarn": "^1.22.21"
   }
 }
+

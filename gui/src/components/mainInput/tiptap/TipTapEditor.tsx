@@ -2,6 +2,7 @@ import { Editor, EditorContent, JSONContent } from "@tiptap/react";
 import { ContextProviderDescription, InputModifiers } from "core";
 import { modelSupportsImages } from "core/llm/autodetect";
 import { useCallback, useContext, useEffect, useState } from "react";
+import { useAuth } from "../../../context/Auth";
 import { IdeMessengerContext } from "../../../context/IdeMessenger";
 import useIsOSREnabled from "../../../hooks/useIsOSREnabled";
 import useUpdatingRef from "../../../hooks/useUpdatingRef";
@@ -43,6 +44,7 @@ export const TIPPY_DIV_ID = "tippy-js-div";
 
 function TipTapEditor(props: TipTapEditorProps) {
   const dispatch = useAppDispatch();
+  const {session} = useAuth();
 
   const ideMessenger = useContext(IdeMessengerContext);
 
@@ -172,6 +174,14 @@ function TipTapEditor(props: TipTapEditorProps) {
       setShouldHideToolbar(true);
     });
   };
+
+  if(!session){
+    return <>
+      <div className="flex h-full w-full items-center justify-center text-gray-500">
+        <p>Please Sign In to use AI Tlu</p>
+      </div>
+    </>
+  }
 
   return (
     <InputBoxDiv

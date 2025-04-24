@@ -21,6 +21,7 @@ import {
   ListboxOptions,
   Transition,
 } from "../../components/ui";
+import { mapModelTitle, mapProviderTitle } from "../../Maps/MapModel";
 import { DisplayInfo } from "../../pages/AddNewModel/configs/models";
 export const StyledListbox = styled(Listbox)`
   background-color: ${vscBackground};
@@ -105,6 +106,7 @@ interface ModelSelectionListboxProps {
   setSelectedProvider: (val: DisplayInfo) => void;
   topOptions?: DisplayInfo[];
   otherOptions?: DisplayInfo[];
+  isProvider?: boolean;
 }
 
 function ModelSelectionListbox({
@@ -112,6 +114,7 @@ function ModelSelectionListbox({
   setSelectedProvider,
   topOptions = [],
   otherOptions = [],
+  isProvider = true,
 }: ModelSelectionListboxProps) {
   return (
     <StyledListbox value={selectedProvider} onChange={setSelectedProvider}>
@@ -124,7 +127,10 @@ function ModelSelectionListbox({
                 className="mr-3 h-4 w-4 object-contain object-center"
               />
             )}
-            <span className="text-xs">{selectedProvider.title}</span>
+            {/* <span className="text-xs">{selectedProvider.title}</span> */}
+            <span className="text-xs">{
+              isProvider ? mapProviderTitle(selectedProvider.title) : mapModelTitle(selectedProvider.title)
+              }</span>
           </span>
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
             <ChevronUpDownIcon
@@ -162,7 +168,10 @@ function ModelSelectionListbox({
                             />
                           )
                         )}
-                        <span className="text-xs">{option.title}</span>
+                        {/* <span className="text-xs">{option.title}</span> */}
+                        <span className="text-xs">
+                          {isProvider ? mapProviderTitle(option.title) : mapModelTitle(option.title)}
+                        </span>
 
                         {selected && (
                           <span className="inset-y-0 ml-auto flex items-center pl-3">
@@ -202,7 +211,9 @@ function ModelSelectionListbox({
                             />
                           )
                         )}
-                        <span className="text-xs">{option.title}</span>
+                        <span className="text-xs">
+                        {isProvider ? mapProviderTitle(option.title) : mapModelTitle(option.title)}
+                        </span>
 
                         {selected && (
                           <span className="inset-y-0 ml-auto flex items-center pl-3">

@@ -4,6 +4,22 @@ const esbuild = require("esbuild");
 
 const flags = process.argv.slice(2);
 
+const tlaFixPlugin = {
+  name: "tla-fix",
+  setup(build) {
+    build.onLoad({ filter: /pkce-challenge/ }, async (args) => {
+      const contents = fs.readFileSync(args.path, "utf8");
+      // Thay top-level await bằng require
+      const modified = contents.replace(
+        /await import\("node:crypto"\)/g,
+        'require("crypto")'
+      );
+      return { contents: modified, loader: "js" };
+    });
+  },
+};
+
+
 const esbuildConfig = {
   entryPoints: ["src/extension.ts"],
   bundle: true,
@@ -45,6 +61,7 @@ const esbuildConfig = {
         });
       },
     },
+    tlaFixPlugin
   ],
 };
 
@@ -53,6 +70,7 @@ const esbuildConfig = {
   if (flags.includes("--watch")) {
     const ctx = await esbuild.context(esbuildConfig);
     await ctx.watch();
+    process.stdin.resume(); // giữ tiến trình sống, có thể dừng bằng Ctrl+C
   } else if (flags.includes("--notify")) {
     const inFile = esbuildConfig.entryPoints[0];
     const outFile = esbuildConfig.outfile;

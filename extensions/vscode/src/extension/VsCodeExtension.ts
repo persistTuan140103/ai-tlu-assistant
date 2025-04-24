@@ -30,8 +30,7 @@ import { QuickEdit } from "../quickEdit/QuickEditQuickPick";
 import { setupRemoteConfigSync } from "../stubs/activation";
 import { UriEventHandler } from "../stubs/uriHandler";
 import {
-  getControlPlaneSessionInfo,
-  WorkOsAuthProvider,
+  getControlPlaneSessionInfo
 } from "../stubs/WorkOsAuthProvider";
 import { Battery } from "../util/battery";
 import { FileSearch } from "../util/FileSearch";
@@ -40,6 +39,7 @@ import { VsCodeIde } from "../VsCodeIde";
 import { ConfigYamlDocumentLinkProvider } from "./ConfigYamlDocumentLinkProvider";
 import { VsCodeMessenger } from "./VsCodeMessenger";
 
+import { TluAuthenticationProvider } from "../stubs/TluAuthProvider";
 import type { VsCodeWebviewProtocol } from "../webviewProtocol";
 
 export class VsCodeExtension {
@@ -55,15 +55,21 @@ export class VsCodeExtension {
   webviewProtocolPromise: Promise<VsCodeWebviewProtocol>;
   private core: Core;
   private battery: Battery;
-  private workOsAuthProvider: WorkOsAuthProvider;
+  // private workOsAuthProvider: WorkOsAuthProvider;
+  private tluAuthProvider: TluAuthenticationProvider;
   private fileSearch: FileSearch;
   private uriHandler = new UriEventHandler();
 
   constructor(context: vscode.ExtensionContext) {
     // Register auth provider
-    this.workOsAuthProvider = new WorkOsAuthProvider(context, this.uriHandler);
-    this.workOsAuthProvider.refreshSessions();
-    context.subscriptions.push(this.workOsAuthProvider);
+    // this.workOsAuthProvider = new WorkOsAuthProvider(context, this.uriHandler);
+    // this.workOsAuthProvider.refreshSessions();
+
+    this.tluAuthProvider = new TluAuthenticationProvider(
+      context
+    );
+
+    context.subscriptions.push(this.tluAuthProvider);
 
     this.editDecorationManager = new EditDecorationManager(context);
 
@@ -94,6 +100,8 @@ export class VsCodeExtension {
       this.extensionContext,
     );
 
+    // console.log("Sidebar:", this.sidebar);
+
     // Sidebar
     context.subscriptions.push(
       vscode.window.registerWebviewViewProvider(
@@ -108,20 +116,25 @@ export class VsCodeExtension {
 
     // Config Handler with output channel
     const outputChannel = vscode.window.createOutputChannel(
-      "Continue - LLM Prompt/Completion",
+      "Continue TLU",
     );
     const inProcessMessenger = new InProcessMessenger<
       ToCoreProtocol,
       FromCoreProtocol
     >();
 
+    /**
+     * change auth provider to use the new auth provider (TluAuthenticationProvider)
+     * and remove the old one (WorkOsAuthProvider)
+     */
     new VsCodeMessenger(
       inProcessMessenger,
       this.sidebar.webviewProtocol,
       this.ide,
       verticalDiffManagerPromise,
       configHandlerPromise,
-      this.workOsAuthProvider,
+      // this.workOsAuthProvider,
+      this.tluAuthProvider,
       this.editDecorationManager,
     );
 

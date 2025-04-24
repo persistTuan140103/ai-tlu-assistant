@@ -41,7 +41,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Session
   const [session, setSession] = useState<ControlPlaneSessionInfo | undefined>(
-    undefined,
+    undefined
   );
 
   // Orgs
@@ -61,6 +61,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const selectedProfile = useAppSelector(selectSelectedProfile);
 
   const login: AuthContextType["login"] = (useOnboarding: boolean) => {
+    console.debug("sending message is can: getControlPlaneSessionInfo");
     return new Promise((resolve) => {
       ideMessenger
         .request("getControlPlaneSessionInfo", {
@@ -89,6 +90,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           confirmText="Yes, log out"
           text="Are you sure you want to log out of Continue?"
           onConfirm={() => {
+            setSession(undefined);
             ideMessenger.post("logoutOfControlPlane", undefined);
           }}
           onCancel={() => {

@@ -18,17 +18,17 @@ import { stripImages } from "core/util/messageContent";
 import { getUriPathBasename } from "core/util/uri";
 import * as vscode from "vscode";
 
+import { ILLM } from "core";
+import { AuthenticationProvider } from "vscode";
 import { VerticalDiffManager } from "../diff/vertical/manager";
 import EditDecorationManager from "../quickEdit/EditDecorationManager";
 import {
-  getControlPlaneSessionInfo,
-  WorkOsAuthProvider,
+  getControlPlaneSessionInfo
 } from "../stubs/WorkOsAuthProvider";
 import { showTutorial } from "../util/tutorial";
 import { getExtensionUri } from "../util/vscode";
 import { VsCodeIde } from "../VsCodeIde";
 import { VsCodeWebviewProtocol } from "../webviewProtocol";
-import { ILLM } from "core";
 
 /**
  * A shared messenger class between Core and Webview
@@ -80,7 +80,7 @@ export class VsCodeMessenger {
     private readonly ide: VsCodeIde,
     private readonly verticalDiffManagerPromise: Promise<VerticalDiffManager>,
     private readonly configHandlerPromise: Promise<ConfigHandler>,
-    private readonly workOsAuthProvider: WorkOsAuthProvider,
+    private readonly workOsAuthProvider: AuthenticationProvider,
     private readonly editDecorationManager: EditDecorationManager,
   ) {
     /** WEBVIEW ONLY LISTENERS **/

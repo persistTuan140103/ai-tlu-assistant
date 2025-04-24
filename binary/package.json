@@ -28,6 +28,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@biomejs/biome": "1.6.4",
+    "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@types/follow-redirects": "^1.14.4",
     "@types/jest": "^29.5.12",
     "@types/uuid": "^9.0.8",

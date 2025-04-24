@@ -21,6 +21,7 @@ import {
 
 import { PromiseAdapter, promiseFromEvent } from "./promiseUtils";
 import { SecretStorage } from "./SecretStorage";
+import { TluAuthenticationProvider } from "./TluAuthProvider";
 import { UriEventHandler } from "./uriHandler";
 
 const AUTH_NAME = "Continue";
@@ -87,6 +88,8 @@ export class WorkOsAuthProvider implements AuthenticationProvider, Disposable {
     private readonly context: ExtensionContext,
     private readonly _uriHandler: UriEventHandler,
   ) {
+    // let tluAuthProvider = new TluAuthenticationProvider(this.context, this._uriHandler);
+    
     this._disposable = Disposable.from(
       authentication.registerAuthenticationProvider(
         controlPlaneEnv.AUTH_TYPE,
@@ -96,6 +99,8 @@ export class WorkOsAuthProvider implements AuthenticationProvider, Disposable {
       ),
       window.registerUriHandler(this._uriHandler),
     );
+
+    // this._disposable = Disposable.from(tluAuthProvider);
 
     this.secretStorage = new SecretStorage(context);
   }
@@ -359,7 +364,7 @@ export class WorkOsAuthProvider implements AuthenticationProvider, Disposable {
   /**
    * Log in to Continue
    */
-  private async login(codeChallenge: string, scopes: string[] = []) {
+private async login(codeChallenge: string, scopes: string[] = []) {
     return await window.withProgress<string>(
       {
         location: ProgressLocation.Notification,
@@ -492,12 +497,26 @@ export async function getControlPlaneSessionInfo(
   useOnboarding: boolean,
 ): Promise<ControlPlaneSessionInfo | undefined> {
   try {
-    if (useOnboarding) {
-      WorkOsAuthProvider.useOnboardingUri = true;
-    }
+    // if (useOnboarding) {
+    //   WorkOsAuthProvider.useOnboardingUri = true;
+    // }
 
+    console.debug("Getting session info from Control Plane");
+
+    /**
+     * * Get the session info from the woksOs authentication provider
+     */
+    // const session = await authentication.getSession(
+    //   controlPlaneEnv.AUTH_TYPE,
+    //   [],
+    //   silent ? { silent: true } : { createIfNone: true },
+    // );
+
+    /**
+     * * Get the session info from the Tlu authentication provider
+     */
     const session = await authentication.getSession(
-      controlPlaneEnv.AUTH_TYPE,
+      TluAuthenticationProvider.AUTH_TYPE,
       [],
       silent ? { silent: true } : { createIfNone: true },
     );

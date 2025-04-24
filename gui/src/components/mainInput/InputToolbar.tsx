@@ -11,6 +11,7 @@ import {
   vscForeground,
   vscInputBackground,
 } from "..";
+import { useAuth } from "../../context/Auth";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectUseActiveFile } from "../../redux/selectors";
 import { selectCurrentToolCall } from "../../redux/selectors/selectCurrentToolCall";
@@ -93,6 +94,7 @@ interface InputToolbarProps {
 
 function InputToolbar(props: InputToolbarProps) {
   const dispatch = useAppDispatch();
+  const { session} = useAuth();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const defaultModel = useAppSelector(selectDefaultModel);
   const useActiveFile = useAppSelector(selectUseActiveFile);
@@ -104,7 +106,8 @@ function InputToolbar(props: InputToolbarProps) {
   const isEnterDisabled =
     props.disabled ||
     isEditModeAndNoCodeToEdit ||
-    toolCallState?.status === "generated";
+    toolCallState?.status === "generated" ||
+    !session;
   const toolsSupported = defaultModel && modelSupportsTools(defaultModel);
 
   const supportsImages =
